@@ -12,7 +12,7 @@ async function handleUserSignup(req,res){
             email,
             password:hashedPassword,
         })
-        return res.json({...newUser._doc,message:"User created successfully"}) 
+        return res.status(200).json({...newUser._doc,message:"User created successfully"}) 
     } catch (error) {
         return res.status(500).json(error)
     }

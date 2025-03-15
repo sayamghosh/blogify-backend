@@ -3,6 +3,8 @@ const app = express();
 const multer = require('multer');
 const userRoute = require('./routes/user.route');
 const connectDB = require('./config/db.config');
+const cors = require('cors');
+require('dotenv').config();
 
 connectDB();
 
@@ -21,6 +23,7 @@ const upload = multer({ storage: storage })
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors({ origin: process.env.FRONTEND_URL , credentials: true }));
 
 app.use('/user',userRoute);
 
