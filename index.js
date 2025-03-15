@@ -1,6 +1,10 @@
 const express = require('express');
 const app = express();
 const multer = require('multer');
+const userRoute = require('./routes/user.route');
+const connectDB = require('./config/db.config');
+
+connectDB();
 
 const PORT = 8000;
 
@@ -18,9 +22,7 @@ const upload = multer({ storage: storage })
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.post('/login',(req,res)=>{
-    return res.json({message: 'Login Successful'});
-})
+app.use('/user',userRoute);
 
 app.post('/upload',upload.single('profileImage'),(req,res)=>{
     console.log(req.body);
