@@ -23,7 +23,16 @@ const upload = multer({ storage: storage })
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: process.env.FRONTEND_URL , credentials: true }));
+
+const corsOptions = {
+  origin: [process.env.FRONTEND_URL], // Add more origins if needed
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"], // Allow specific methods
+  allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
+};
+
+app.use(cors(corsOptions));
+
 
 app.use('/user',userRoute);
 
