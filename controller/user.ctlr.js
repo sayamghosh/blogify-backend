@@ -32,7 +32,7 @@ async function handleUserLogin(req,res){
                 email:user.email,
                 id:user._id
             }
-            const token = jwt.sign(payload,process.env.JWT_SECRET , { expiresIn: '1h' });
+            const token = jwt.sign(payload,process.env.JWT_SECRET , { expiresIn: '1d' });
             res.cookie('token',token,{httpOnly:true});
             return res.json({message:"Login successfull"}) 
         }
@@ -42,7 +42,14 @@ async function handleUserLogin(req,res){
     }
 }
 
+async function handleUserDashboard(req,res){
+    const user = await User.findOne({email:req.email}).select("-password")
+
+    return res.json({message:"Welcome to dashboard",user})
+}
+
 module.exports={
     handleUserSignup,
     handleUserLogin,
+    handleUserDashboard
 }
