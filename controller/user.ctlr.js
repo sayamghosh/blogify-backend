@@ -21,7 +21,6 @@ async function handleUserSignup(req,res){
 
 async function handleUserLogin(req,res){
     const {email, password}=req.body;
-    console.log(req.body)
     try {
         const user = await User.findOne({email:email})
         if(!user){
@@ -34,7 +33,8 @@ async function handleUserLogin(req,res){
                 id:user._id
             }
             const token = jwt.sign(payload,process.env.JWT_SECRET , { expiresIn: '1h' });
-            return res.json({message:"Login successfull",token:token}) 
+            res.cookie('token',token,{httpOnly:true});
+            return res.json({message:"Login successfull"}) 
         }
         return res.status(400).json({error:"Wrong password"})
     } catch (error) {
