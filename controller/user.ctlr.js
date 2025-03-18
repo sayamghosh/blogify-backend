@@ -8,6 +8,10 @@ async function handleUserSignup(req,res){
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password,salt);
     try {
+        const foundUser = await User.findOne({email:email})
+        if(foundUser){
+            return res.status(400).json({error:"User already exists"})
+        }
         const newUser=await User.create({
             fullName,
             email,
