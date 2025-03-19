@@ -3,7 +3,9 @@ const app = express();
 const multer = require('multer');
 const userRoute = require('./routes/user.route');
 const connectDB = require('./config/db.config');
+const blogRoute = require('./routes/blog.route')
 const cors = require('cors');
+
 require('dotenv').config();
 
 connectDB();
@@ -33,14 +35,14 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-
 app.use('/user',userRoute);
 
-app.post('/upload',upload.single('profileImage'),(req,res)=>{
-    console.log(req.body);
-    console.log(req.file);
+app.use('/blog',blogRoute);
 
-    return res.json('message: File uploaded successfully');
+app.post('/upload',upload.single('profileImage'),(req,res)=>{
+    // console.log(req.body);
+    // console.log(req.file);
+  return res.json('message: File uploaded successfully');
 })
 
 app.get('/',(req,res)=>{

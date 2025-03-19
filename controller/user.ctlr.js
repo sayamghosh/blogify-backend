@@ -47,7 +47,7 @@ async function handleUserLogin(req,res){
 }
 
 async function handleUserDashboard(req,res){
-    const user = await User.findOne({email:req.email}).select("-password")
+    const user = await User.findOne({_id:req.id}).select("-password")
 
     return res.json({message:"Welcome to dashboard",user})
 }
