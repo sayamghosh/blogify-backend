@@ -1,19 +1,23 @@
-const cloudinary = require('../config/cloudinary');
+const multer = require("multer");
+const cloudinary = require("../config/cloudinary");
+
+// Configure multer for file uploads
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 async function handleCreateBlog(req, res) {
     try {
-        const { image } = req.body;
-
-        if (!image) {
-            return res.status(400).json({ error: "No image provided" });
+        if (!req.file) {
+            return res.status(400).json({ error: "No file uploaded" });
         }
 
-        console.log("Received image data:", image.slice(0, 30) + "..."); // Logging first few characters for debugging
+        console.log("Received file:", req.file.originalname);
+
+        // Convert file buffer to base64
+        const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
 
         // Upload to Cloudinary
-        const cloudinary_res = await cloudinary.uploader.upload(image, {
-            folder: "blogcover",
-        });
+        const cloudinary_res = await cloudinary.uploader.upload(base64Image, { folder: "blogcover" });
 
         console.log("Cloudinary upload successful:", cloudinary_res.secure_url);
         
@@ -28,4 +32,4 @@ async function handleCreateBlog(req, res) {
     }
 }
 
-module.exports = { handleCreateBlog };
+module.exports = { handleCreateBlog, upload };
