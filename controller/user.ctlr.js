@@ -37,8 +37,7 @@ async function handleUserLogin(req,res){
                 id:user._id
             }
             const token = jwt.sign(payload,process.env.JWT_SECRET , { expiresIn: '1d' });
-            res.cookie('token',token,{httpOnly:true});
-            return res.json({message:"Login successfull"}) 
+            return res.json({message:"Login successfull",token:token}) 
         }
         return res.status(400).json({error:"Wrong password"})
     } catch (error) {

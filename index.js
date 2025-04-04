@@ -10,7 +10,7 @@ require('dotenv').config();
 
 connectDB();
 
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const corsOptions = {
-  origin: [process.env.FRONTEND_URL,"http://localhost:3000"], // Add more origins if needed
+  origin: ["https://blogify-pro.vercel.app/","http://localhost:3000"], // Add more origins if needed
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"], // Allow specific methods
   allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
