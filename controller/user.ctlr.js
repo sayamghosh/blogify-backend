@@ -34,10 +34,11 @@ async function handleUserLogin(req,res){
         if(isMatch){
             const payload = {
                 email:user.email,
-                id:user._id
+                id:user._id,
+                fullName:user.fullName,
             }
             const token = jwt.sign(payload,process.env.JWT_SECRET , { expiresIn: '1d' });
-            return res.json({message:"Login successfull",token:token}) 
+            return res.json({message:"Login successfull",token:token,success:true}) 
         }
         return res.status(400).json({error:"Wrong password"})
     } catch (error) {

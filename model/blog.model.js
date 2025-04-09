@@ -17,7 +17,11 @@ const blogSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref: "User",
         required: true
-    }
+    },
+    author:{
+        type: String,
+        required: true
+    },
 },{timestamps:true})
 
 const Blog = model('Blog',blogSchema)

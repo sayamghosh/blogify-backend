@@ -1,17 +1,19 @@
 const multer = require("multer");
 const cloudinary = require("../config/cloudinary");
+const Blog = require("../model/blog.model");
 
 // Configure multer for file uploads
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 async function handleCreateBlog(req, res) {
+    const {title,content}=req.body;
     try {
         if (!req.file) {
             return res.status(400).json({ error: "No file uploaded" });
         }
 
-        console.log("Received file:", req.file.originalname);
+        // console.log("Received file:", req.file.originalname);
 
         // Convert file buffer to base64
         const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
@@ -19,11 +21,24 @@ async function handleCreateBlog(req, res) {
         // Upload to Cloudinary
         const cloudinary_res = await cloudinary.uploader.upload(base64Image, { folder: "blogcover" });
 
-        console.log("Cloudinary upload successful:", cloudinary_res.secure_url);
+        // console.log("Cloudinary upload successful:", cloudinary_res.secure_url);
+
+        // Create a new blog post with the uploaded image URL
+        const newBlog = await Blog.create({
+            title,
+            content,
+            coverImageUrl: cloudinary_res.secure_url,
+            createdBy: req.id,
+            author: req.fullName,
+        });
         
+        if(!newBlog) {
+            return res.status(500).json({ error: "Failed to create blog post" });
+        }
+
         return res.status(200).json({
-            message: "File uploaded successfully",
-            url: cloudinary_res.secure_url,
+            message: "Blog post created successfully",
+            success: true,
         });
 
     } catch (error) {
