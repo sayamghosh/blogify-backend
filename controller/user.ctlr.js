@@ -8,6 +8,10 @@ async function handleUserSignup(req,res){
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password,salt);
     try {
+        const foundUser = await User.findOne({email:email})
+        if(foundUser){
+            return res.status(400).json({error:"User already exists"})
+        }
         const newUser=await User.create({
             fullName,
             email,
@@ -30,11 +34,11 @@ async function handleUserLogin(req,res){
         if(isMatch){
             const payload = {
                 email:user.email,
-                id:user._id
+                id:user._id,
+                fullName:user.fullName,
             }
             const token = jwt.sign(payload,process.env.JWT_SECRET , { expiresIn: '1d' });
-            res.cookie('token',token,{httpOnly:true});
-            return res.json({message:"Login successfull"}) 
+            return res.json({message:"Login successfull",token:token,success:true}) 
         }
         return res.status(400).json({error:"Wrong password"})
     } catch (error) {
@@ -43,7 +47,7 @@ async function handleUserLogin(req,res){
 }
 
 async function handleUserDashboard(req,res){
-    const user = await User.findOne({email:req.email}).select("-password")
+    const user = await User.findOne({_id:req.id}).select("-password")
 
     return res.json({message:"Welcome to dashboard",user})
 }
