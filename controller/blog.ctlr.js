@@ -7,7 +7,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 async function handleCreateBlog(req, res) {
-    const {title,content}=req.body;
+    const {title,content,category}=req.body;
     try {
         if (!req.file) {
             return res.status(400).json({ error: "No file uploaded" });
@@ -27,6 +27,7 @@ async function handleCreateBlog(req, res) {
         const newBlog = await Blog.create({
             title,
             content,
+            category,
             coverImageUrl: cloudinary_res.secure_url,
             createdBy: req.id,
             author: req.fullName,
@@ -47,4 +48,13 @@ async function handleCreateBlog(req, res) {
     }
 }
 
-module.exports = { handleCreateBlog, upload };
+async function handleGetAllBlogs(req,res){
+    const blogs = await Blog.find({}).sort({ createdAt: -1 });
+    res.status(200).json({
+        message: "Blogs fetched successfully",
+        success: true,
+        blogs,
+    });
+}
+
+module.exports = { handleCreateBlog, upload , handleGetAllBlogs};
