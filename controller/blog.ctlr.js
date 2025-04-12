@@ -23,7 +23,7 @@ async function handleCreateBlog(req, res) {
 
         // console.log("Cloudinary upload successful:", cloudinary_res.secure_url);
 
-        // Create a new blog post with the uploaded image URL
+        // Create a new blog post with the uploaded image URL  
         const newBlog = await Blog.create({
             title,
             content,

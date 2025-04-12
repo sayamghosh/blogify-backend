@@ -25,7 +25,11 @@ const blogSchema = new Schema({
     category:{
         type: String,
         required: true
-    }
+    },
+    likes:{
+        type: Number,
+        default: 0
+    },
 },{timestamps:true})
 
 const Blog = model('Blog',blogSchema)
