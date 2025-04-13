@@ -70,4 +70,17 @@ async function handleGetOneBlog(req,res){
     });
 }
 
-module.exports = { handleCreateBlog, upload , handleGetAllBlogs,handleGetOneBlog};
+async function handleGetMyBlogs(req,res){
+    const {id} = req.body;
+    const blog = await Blog.find({createdBy:id});
+    if(!blog){
+        return res.status(404).json({error:"Blog not found"})
+    }
+    res.status(200).json({
+        message: "Blog fetched successfully",
+        success: true,
+        blog,
+    });
+}
+
+module.exports = { handleCreateBlog, upload , handleGetAllBlogs,handleGetOneBlog,handleGetMyBlogs};
