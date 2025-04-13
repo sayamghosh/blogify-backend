@@ -8,8 +8,8 @@ router.post("/create",verifyToken, upload.single("image"), handleCreateBlog);
 
 router.get("/getall",handleGetAllBlogs)
 
-router.get("/getone",handleGetOneBlog)
+router.post("/getone",handleGetOneBlog)
 
-router.get("/myblog",handleGetMyBlogs)
+router.post("/myblog",handleGetMyBlogs)
 
 module.exports = router;
