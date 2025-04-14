@@ -42,7 +42,29 @@ const getLikesCount = async (req, res) => {
     return res.status(200).json({ count });
   };
 
+async function handleCheckLike(req,res){
+    const {blogId} = req.body;
+    const userId = req.id;
+    
+    const existingLike = await Like.findOne({ blogId, userId });
+    if(existingLike){
+        return res.status(200).json({
+            message: "Blog already liked",
+            success: true,
+            liked:true,
+        });
+    }
+    else{
+        return res.status(200).json({
+            message: "Blog not liked",
+            success: true,
+            liked:false,
+        });
+    }
+}
+
 module.exports={
     toggleLike,
-    getLikesCount
+    getLikesCount,
+    handleCheckLike
 }
