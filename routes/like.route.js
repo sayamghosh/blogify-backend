@@ -6,6 +6,6 @@ const  { verifyToken } = require('../middleware/verifyToken.js');
 const router = express.Router();
 
 router.post('/toggle', verifyToken, toggleLike);
-router.get('/count/:blogId', getLikesCount);
+router.post('/count', getLikesCount);
 
 module.exports = router;

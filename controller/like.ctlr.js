@@ -36,7 +36,7 @@ async function toggleLike(req,res){
 
 
 const getLikesCount = async (req, res) => {
-    const { blogId } = req.params;
+    const { blogId } = req.body;
   
     const count = await Like.countDocuments({ blogId });
     return res.status(200).json({ count });
