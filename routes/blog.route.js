@@ -10,6 +10,8 @@ router.get("/getall",handleGetAllBlogs)
 
 router.post("/getone",handleGetOneBlog)
 
-router.post("/myblog",handleGetMyBlogs)
+router.post("/myblog",verifyToken,handleGetMyBlogs)
+
+
 
 module.exports = router;

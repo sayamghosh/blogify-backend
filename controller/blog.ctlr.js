@@ -71,8 +71,9 @@ async function handleGetOneBlog(req,res){
 }
 
 async function handleGetMyBlogs(req,res){
-    const {id} = req.body;
-    const blog = await Blog.find({createdBy:id});
+    const userId = req.id;
+    const blog = await Blog.find({createdBy:userId});
+
     if(!blog){
         return res.status(404).json({error:"Blog not found"})
     }
