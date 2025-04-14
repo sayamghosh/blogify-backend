@@ -1,5 +1,5 @@
 // models/like.model.ts
-const {Schema,model} = require('mongoose')
+const {Schema,model,mongoose} = require('mongoose')
 
 const likeSchema = new Schema({
   blogId: {

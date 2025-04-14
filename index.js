@@ -4,6 +4,7 @@ const multer = require('multer');
 const userRoute = require('./routes/user.route');
 const connectDB = require('./config/db.config');
 const blogRoute = require('./routes/blog.route')
+const likeRoute = require('./routes/like.route')
 const cors = require('cors');
 
 require('dotenv').config();
@@ -38,6 +39,8 @@ app.use(cors(corsOptions));
 app.use('/user',userRoute);
 
 app.use('/blog',blogRoute);
+
+app.use('/like',likeRoute);
 
 app.post('/upload',upload.single('profileImage'),(req,res)=>{
     // console.log(req.body);
