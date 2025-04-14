@@ -1,6 +1,7 @@
 const multer = require("multer");
 const cloudinary = require("../config/cloudinary");
 const Blog = require("../model/blog.model");
+const Like = require("../model/like.model");
 
 // Configure multer for file uploads
 const storage = multer.memoryStorage();
@@ -84,4 +85,18 @@ async function handleGetMyBlogs(req,res){
     });
 }
 
-module.exports = { handleCreateBlog, upload , handleGetAllBlogs,handleGetOneBlog,handleGetMyBlogs};
+async function handleGetLikedBlog(req,res){
+    const userId = req.id;
+    const likedBlog = await Like.find({userId}).select("blogId").populate("blogId").sort({ createdAt: -1 });
+    if(!likedBlog){
+        return res.status(404).json({error:"Blog not found",success:false})
+    }
+
+    const blog = likedBlog.map((item) => {
+        return item.blogId;
+    })
+
+    return res.status(200).json({blog,success:true})
+}
+
+module.exports = { handleCreateBlog, upload , handleGetAllBlogs,handleGetOneBlog,handleGetMyBlogs,handleGetLikedBlog};
