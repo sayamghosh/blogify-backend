@@ -28,7 +28,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const corsOptions = {
-  origin: ["https://blogify-pro.vercel.app","http://localhost:3000"], // Add more origins if needed
+  origin: ["https://blogify-pro.vercel.app","http://localhost:3000","https://blog.blinkdeals.shop"], // Add more origins if needed
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"], // Allow specific methods
   allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
